@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+string minWindow(string s, string t) {
+        int n=s.size();
+        int m=t.size();
+        
+        unordered_map<char,int>mp;
+        for(int i=0;i<m;i++)
+            mp[t[i]]++;
+        
+        string ans="";
+        int i=0,j=0,l=INT_MAX,count=mp.size();
+        
+        while(j<n){
+            
+             if(mp.find(s[j])!=mp.end()){
+                mp[s[j]]--;
+                if(mp[s[j]]==0)
+                    count--;
+                
+             }
+             if(count>0){
+                j++;
+                continue;
+             }
+               
+              while(mp.find(s[i])==mp.end()||mp[s[i]]<0){
+               if(mp.find(s[i])==mp.end())
+                   i++;
+               if(mp.find(s[i])!=mp.end()){   
+                    if(mp[s[i]]<0){
+                        mp[s[i]]++;
+                   i++;
+                    }
+               }   
+                
+             }
+              if(count==0){
+                  if(l>(j-i+1)){
+                      l=j-i+1;
+                     // cout<<i<<" "<<l<<" ";
+                      ans=s.substr(i,l);
+                  }
+              }      
+            j++;
+        }
+       
+        return ans;
+    }
+    int main()
+{
+    string str = "this is a test string";
+    string pat = "tist";
+ 
+    cout << "Smallest window is : \n"
+         << minWindow(str, pat);
+    return 0;
+}
